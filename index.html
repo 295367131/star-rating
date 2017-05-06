@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="telephone=no" name="format-detection" />
+    <title>jquery五星评分</title>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <style>
+        .blend-star-item {
+          display: block;
+          width: 17%;
+          margin: 0px 0px 10px 0px;
+          padding-right: 3%;
+          background: url(img/star1.png) no-repeat;
+          cursor: pointer;
+          float: left;
+        }
+        .blend-star-item.selected {
+          background: url(img/star2.png) no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <div id="blend-star" onmouseout="starout()">
+        <i class="blend-star-item"></i>
+        <i class="blend-star-item"></i>
+        <i class="blend-star-item"></i>
+        <i class="blend-star-item"></i>
+        <i class="blend-star-item"></i>
+    </div>
+    <script>
+        var starNub=0;//初始的星星数
+        var score;//最后得分（1~5）
+        var blend_star_nub;
+        $(document).ready(function(){
+            $(".blend-star-item").height($(".blend-star-item").width());
+            $(".blend-star-item,.selected").css("background-size","calc(100% - "+$(".blend-star-item").css("padding-right")+")");
+
+            blend_star_nub = $(".blend-star-item").length;
+            for(i=0;i<blend_star_nub;i++){
+                $(".blend-star-item:eq("+i+")").attr({"data-starid":i+1,"onmousemove":"starmove("+(i+1)+")","onclick":"starclick("+(i+1)+")"});
+            }
+        })
+        for (i=1;i<starNub+1;i++){
+            $(".blend-star-item[data-starid="+i+"]").addClass('selected');
+        }
+        function starmove(id){
+            for(i=blend_star_nub;i>0;i--){
+                if(id<i){
+                    if($(".blend-star-item[data-starid="+i+"]").is('.selected')){
+                        $(".blend-star-item[data-starid="+i+"]").removeClass('selected');
+                    }
+                }else {
+                    if($(".blend-star-item[data-starid="+i+"]").is('.selected')){
+
+                    }else {
+                        $(".blend-star-item[data-starid="+i+"]").addClass('selected');
+                    }
+                }
+            }
+        }
+        function starout(){
+            $(".blend-star-item").removeClass("selected");
+        }
+        function starclick(id){
+            starmove(id);
+            for(i=1;i<=5;i++){
+                $("#blend-star").attr("onmouseout","");
+                $(".blend-star-item[data-starid="+i+"]").attr("onmousemove","");
+            }
+            score = id;
+            alert("评分："+score+"分！");
+        }
+    </script>
+</body>
+</html>
